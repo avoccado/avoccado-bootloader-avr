@@ -132,7 +132,7 @@
 /* received over UART.  This uses the 1M, ShockBurst(tm)  */
 /* mode for simplicity. Slave address will be read from   */
 /* the EEPROM, needs to be set up first.                  */
-/*                                                        */
+/* shu: seems to actually use 250KBPS and ShockBurst      */
 /**********************************************************/
 
 /**********************************************************/
@@ -553,7 +553,7 @@ int main(void) {
   radio_init();
 #endif
 
-  // Set up watchdog to trigger after 500ms
+  // Set up watchdog to trigger after 1000ms
   watchdogConfig(WATCHDOG_1S);
 
 #if (LED_START_FLASHES > 0) || defined(LED_DATA_FLASH)
@@ -792,8 +792,8 @@ static uint8_t radio_mode = 0;
 static uint8_t radio_present = 0;
 static uint8_t pkt_max_len = 32;
 
-#define CE_DDR		DDRC
-#define CE_PORT		PORTC
+#define CE_DDR		DDRB //shu: standard for Avoccado since A1, Nora, Faye..
+#define CE_PORT		PORTB
 #define CSN_DDR		DDRB
 #define CSN_PORT	PORTB
 #define CE_PIN		(1 << 1)

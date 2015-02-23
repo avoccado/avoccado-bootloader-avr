@@ -26,7 +26,7 @@ static void delay8(uint16_t count) {
 		);
 }
 #ifndef TIMER
-#define my_delay(msec) delay8((int) (F_CPU / 8000L * (msec)))
+#define my_delay(msec) delay8((int) (F_CPU / 8000L * (msec))) //shu: 8000L might not make sense as a fixed value
 #endif
 
 static inline void nrf24_ce(uint8_t level) {
@@ -300,7 +300,7 @@ static void nrf24_tx(uint8_t *buf, uint8_t len) {
 
 static int nrf24_tx_result_wait(void) {
 	uint8_t status;
-	uint16_t count = 10000; /* ~100ms timeout */
+	uint16_t count = 10000; /* ~100ms timeout shu: can be lower*/
 
 	status = nrf24_read_status();
 

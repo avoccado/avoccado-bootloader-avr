@@ -1,20 +1,16 @@
 Optiboot for nRF24L01+
 ======================
 
-This is a modifed Optiboot bootloader for Arduino.  The two main features I added are:
+This is a modifed Optiboot bootloader for AVR micro controllers.  Main features added:
 
-*   support for the nRF24L01+ radio transciever chip for wireless reprogramming of
-    your Arduinos.
+*   support for the nRF24L01+ radio transciever chip for wireless flashing
 *   implemented SUPPORT_EEPROM so eeprom flashing now actually works.
 
-The nRF24L01+ is a cheap SPI radio transciever chip that works in simplex mode (can't receive
-and transmit at the same time, unlike serial communication).  This version of optiboot can
-receive commands from a program like avrdude or an Arduino IDE either through serial or
-through the nRF24L01+ chip if one is connected.  Over serial it behaves as normal.
-
-The nRF24L01+ modules (PCB with the radio chip, antenna and a few other things) can be had
-for less than $1 from the likes of ebay.  Add an Arduino clone for $2.50 and it's a wireless
-Arduino for $3.50.
+This version of optiboot can receive commands from a program like avrdude or an Arduino
+IDE either through
+serial/UART 
+or
+the nRF24L01+ chip (if one is connected and detected).
 
 Optiboot
 ========
@@ -43,14 +39,14 @@ To also add nRF24L01+ support you need to use "LED_START_FLASHES=0 RADIO_UART=1 
     $ make atmega328 LED_START_FLASHES=0 RADIO_UART=1 FORCE_WATCHDOG=1 SUPPORT_EEPROM=1
 
 Your bootloader is ready to burn onto an atmega chip at optiboot_atmega328.hex.  To burn it
-you can use another Arduino as described in README.TXT.  LED_START_FLASHES=0 is needed because
+you can use another "usbasp -c Arduino" as described in README.TXT.  LED_START_FLASHES=0 is needed because
 the LED uses one of the SPI pins.  BIGBOOT=1 gets enabled automatically.  With both features
 enabled the bootloader takes up 1.5 kB instead of the original 0.5 kB.
 
 The nRF chip is expected to be connected to the arduino using the 3 standard SPI pins (MOSI,
 MISO, SCK) plus the CE and CSN pins of the nRF chip.  By default optiboot assumes CE is
-wired to Analog Pin 1 (PC1) and CSN to SPI Slave Select (SS) aka. Digital pin 10 (PB2) because they're right next to the SPI pins
-on some Arduinos.  You can change that mapping in optiboot.c.
+wired to digital pin 9 (PB1) and CSN to SPI Slave Select (SS) aka. Digital pin 10 (PB2) because they're right next to the SPI pins
+on most MCUs.  You can change that mapping in optiboot.c.
 
 FORCE_WATCHDOG=1 enables the watchdog when starting the user application -- it will reset your programs after
 4s and force jumping back to bootloader for 1s, unless the program calls watchdog reset ("wdt")
